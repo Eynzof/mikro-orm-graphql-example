@@ -18,6 +18,6 @@ export class Base<T extends { id: string }> extends BaseEntity<T, 'id'> {
 
   constructor(body = {}) {
     super();
-    this.assign(body);
+    // this.assign();
   }
 }

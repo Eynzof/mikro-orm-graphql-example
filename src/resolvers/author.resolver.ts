@@ -10,7 +10,7 @@ export class AuthorResolver {
   @Query(() => [Author])
   public async getAuthors(@Ctx() ctx: MyContext, @Info() info: GraphQLResolveInfo): Promise<Author[]> {
     const relationPaths = fieldsToRelations(info);
-    return ctx.em.getRepository(Author).findAll(relationPaths);
+    return ctx.em.getRepository(Author).findAll();
   }
 
   @Query(() => Author, { nullable: true })
@@ -20,7 +20,7 @@ export class AuthorResolver {
     @Info() info: GraphQLResolveInfo,
   ): Promise<Author | null> {
     const relationPaths = fieldsToRelations(info);
-    return ctx.em.getRepository(Author).findOne({ id }, relationPaths);
+    return ctx.em.getRepository(Author).findOne(id);
   }
 
   @Mutation(() => Author)
@@ -38,7 +38,7 @@ export class AuthorResolver {
     @Info() info: GraphQLResolveInfo,
   ): Promise<Author> {
     const relationPaths = fieldsToRelations(info);
-    const author = await ctx.em.getRepository(Author).findOneOrFail({ id }, relationPaths);
+    const author = await ctx.em.getRepository(Author).findOneOrFail(id);
     author.assign(input);
     await ctx.em.persist(author).flush();
     return author;
@@ -46,7 +46,7 @@ export class AuthorResolver {
 
   @Mutation(() => Boolean)
   public async deleteAuthor(@Arg('id') id: string, @Ctx() ctx: MyContext): Promise<boolean> {
-    const author = await ctx.em.getRepository(Author).findOneOrFail({ id });
+    const author = await ctx.em.getRepository(Author).findOneOrFail(id);
     await ctx.em.getRepository(Author).remove(author).flush();
     return true;
   }

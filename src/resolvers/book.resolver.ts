@@ -11,8 +11,7 @@ import { MyContext } from 'utils/interfaces/context.interface';
 export class BookResolver {
   @Query(() => [Book])
   public async getBooks(@Ctx() ctx: MyContext, @Info() info: GraphQLResolveInfo): Promise<Book[]> {
-    const relationPaths = fieldsToRelations(info);
-    return ctx.em.getRepository(Book).findAll(relationPaths);
+    return ctx.em.getRepository(Book).findAll();
   }
 
   @Query(() => Book, { nullable: true })
@@ -21,8 +20,7 @@ export class BookResolver {
     @Ctx() ctx: MyContext,
     @Info() info: GraphQLResolveInfo,
   ): Promise<Book | null> {
-    const relationPaths = fieldsToRelations(info);
-    return ctx.em.getRepository(Book).findOne({ id }, relationPaths);
+    return ctx.em.getRepository(Book).findOne(id);
   }
 
   @Mutation(() => Book)
@@ -34,17 +32,10 @@ export class BookResolver {
     @Info() info: GraphQLResolveInfo,
   ): Promise<Book> {
     const book = new Book(input);
-    book.author = await ctx.em
-      .getRepository(Author)
-      .findOneOrFail({ id: authorId }, fieldsToRelations(info, { root: 'author' }));
+    book.author = await ctx.em.getRepository(Author).findOneOrFail(authorId);
 
     if (publisherId) {
-      book.publisher = await ctx.em.getRepository(Publisher).findOneOrFail(
-        { id: publisherId },
-        fieldsToRelations(info, {
-          root: 'publisher',
-        }),
-      );
+      book.publisher = await ctx.em.getRepository(Publisher).findOneOrFail(publisherId);
     }
     await ctx.em.persist(book).flush();
     return book;
@@ -58,7 +49,7 @@ export class BookResolver {
     @Info() info: GraphQLResolveInfo,
   ): Promise<Book> {
     const relationPaths = fieldsToRelations(info);
-    const book = await ctx.em.getRepository(Book).findOneOrFail({ id }, relationPaths);
+    const book = await ctx.em.getRepository(Book).findOneOrFail(id);
     book.assign(input);
     await ctx.em.persist(book).flush();
     return book;
@@ -66,7 +57,7 @@ export class BookResolver {
 
   @Mutation(() => Boolean)
   public async deleteBook(@Arg('id') id: string, @Ctx() ctx: MyContext): Promise<boolean> {
-    const book = await ctx.em.getRepository(Book).findOneOrFail({ id });
+    const book = await ctx.em.getRepository(Book).findOneOrFail(id);
     await ctx.em.getRepository(Book).remove(book).flush();
     return true;
   }
