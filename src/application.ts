@@ -47,7 +47,6 @@ export default class Application {
   };
 
   public init = async (): Promise<void> => {
-
     const app = express();
     // 这一行允许 ApolloStudio 接管
     app.use(cors());
