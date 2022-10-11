@@ -61,10 +61,12 @@ export default class Application {
         dateScalarMode: 'isoDate',
       });
 
-      this.insertTestData()
+      // succeeded
+      this.insertTestData();
 
       this.host.post(
         '/graphql',
+        bodyParser.json(),
         graphqlHTTP((req, res) => ({
           schema,
           context: { req, res, em: this.orm.em.fork() } as MyContext,
