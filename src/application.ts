@@ -12,7 +12,7 @@ import { Server } from 'http';
 import ormConfig from 'orm.config';
 import { AuthorResolver } from 'resolvers/author.resolver';
 import { BookResolver } from 'resolvers/book.resolver';
-import { buildSchema, registerEnumType } from 'type-graphql';
+import { buildSchema, buildTypeDefsAndResolvers, registerEnumType } from 'type-graphql';
 import { MyContext } from 'utils/interfaces/context.interface';
 import { HelloResolver } from 'resolvers/hello.resolver';
 import { Post } from 'entities/post.entity';
@@ -20,7 +20,7 @@ import { ApolloServer } from 'apollo-server';
 
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import { resolvers, typeDefs } from 'minimal-apollo-setup';
+// import { resolvers, typeDefs } from 'minimal-apollo-setup';
 
 // TODO: create service for this
 registerEnumType(PublisherType, {
@@ -65,42 +65,17 @@ export default class Application {
     app.use(express.json());
 
     try {
-      // const schema: GraphQLSchema = await buildSchema({
-      //   resolvers: [BookResolver, AuthorResolver, HelloResolver],
-      //   dateScalarMode: 'isoDate',
-      // });
-
-      const schema = await buildSchema({
+      const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
         resolvers: [BookResolver, AuthorResolver, HelloResolver],
-        validate: false,
       });
-
-      // console.log(schema);
 
       const server = new ApolloServer({
         typeDefs,
         resolvers,
         csrfPrevention: true,
         cache: 'bounded',
-        /**
-         * What's up with this embed: true option?
-         * These are our recommended settings for using AS;
-         * they aren't the defaults in AS3 for backwards-compatibility reasons but
-         * will be the defaults in AS4. For production environments, use
-         * ApolloServerPluginLandingPageProductionDefault instead.
-         **/
         plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
       });
-
-      // const apolloServer = new ApolloServer({
-      //   typeDefs: await buildSchema({
-      //     resolvers: [BookResolver, AuthorResolver, HelloResolver],
-      //     validate: false,
-      //   }),
-      //   context: () => ({ em: this.orm.em }),
-      //   cache: 'bounded',
-      //   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
-      // });
 
       // succeeded
       this.insertTestData();
@@ -110,25 +85,6 @@ export default class Application {
       server.listen({ port }).then(({ url }) => {
         console.log(`🚀  Server ready at ${url}`);
       });
-
-      // await apolloServer.start();
-      // apolloServer.applyMiddleware({ app, cors: false });
-
-      // app.listen(4000, () => {
-      //   console.log('server listening on port 4000');
-      // });
-
-      // this.host.post(
-      //   '/graphql',
-      //   bodyParser.json(),
-      //   graphqlHTTP((req, res) => ({
-      //     schema,
-      //     context: { req, res, em: this.orm.em.fork() } as MyContext,
-      //     customFormatErrorFn: (error) => {
-      //       throw error;
-      //     },
-      //   })),
-      // );
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       // this.host.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction): void => {
