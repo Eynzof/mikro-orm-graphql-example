@@ -1,25 +1,17 @@
 import AuthorValidator from 'contracts/validators/Author.validator';
 import { Author } from 'entities/author.entity';
-import { GraphQLResolveInfo } from 'graphql';
-import fieldsToRelations from 'graphql-fields-to-relations';
-import { Arg, Ctx, Info, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { MyContext } from 'utils/interfaces/context.interface';
 
 @Resolver(() => Author)
 export class AuthorResolver {
   @Query(() => [Author])
-  public async getAuthors(@Ctx() ctx: MyContext, @Info() info: GraphQLResolveInfo): Promise<Author[]> {
-    const relationPaths = fieldsToRelations(info);
+  public async getAuthors(@Ctx() ctx: MyContext): Promise<Author[]> {
     return ctx.em.getRepository(Author).findAll();
   }
 
   @Query(() => Author, { nullable: true })
-  public async getAuthor(
-    @Arg('id') id: string,
-    @Ctx() ctx: MyContext,
-    @Info() info: GraphQLResolveInfo,
-  ): Promise<Author | null> {
-    const relationPaths = fieldsToRelations(info);
+  public async getAuthor(@Arg('id') id: string, @Ctx() ctx: MyContext): Promise<Author | null> {
     return ctx.em.getRepository(Author).findOne(id);
   }
 
@@ -35,9 +27,7 @@ export class AuthorResolver {
     @Arg('input') input: AuthorValidator,
     @Arg('id') id: string,
     @Ctx() ctx: MyContext,
-    @Info() info: GraphQLResolveInfo,
   ): Promise<Author> {
-    const relationPaths = fieldsToRelations(info);
     const author = await ctx.em.getRepository(Author).findOneOrFail(id);
     author.assign(input);
     await ctx.em.persist(author).flush();

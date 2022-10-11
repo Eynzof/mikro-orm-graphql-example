@@ -2,24 +2,18 @@ import BookValidator from 'contracts/validators/Book.validator';
 import { Author } from 'entities/author.entity';
 import { Book } from 'entities/book.entity';
 import { Publisher } from 'entities/publisher.entity';
-import { GraphQLResolveInfo } from 'graphql';
-import fieldsToRelations from 'graphql-fields-to-relations';
-import { Arg, Ctx, Info, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import { MyContext } from 'utils/interfaces/context.interface';
 
 @Resolver(() => Book)
 export class BookResolver {
   @Query(() => [Book])
-  public async getBooks(@Ctx() ctx: MyContext, @Info() info: GraphQLResolveInfo): Promise<Book[]> {
+  public async getBooks(@Ctx() ctx: MyContext): Promise<Book[]> {
     return ctx.em.getRepository(Book).findAll();
   }
 
   @Query(() => Book, { nullable: true })
-  public async getBook(
-    @Arg('id') id: string,
-    @Ctx() ctx: MyContext,
-    @Info() info: GraphQLResolveInfo,
-  ): Promise<Book | null> {
+  public async getBook(@Arg('id') id: string, @Ctx() ctx: MyContext): Promise<Book | null> {
     return ctx.em.getRepository(Book).findOne(id);
   }
 
@@ -29,7 +23,6 @@ export class BookResolver {
     @Arg('authorId') authorId: string,
     @Arg('publisherId', { nullable: true }) publisherId: string,
     @Ctx() ctx: MyContext,
-    @Info() info: GraphQLResolveInfo,
   ): Promise<Book> {
     const book = new Book(input);
     book.author = await ctx.em.getRepository(Author).findOneOrFail(authorId);
@@ -46,9 +39,7 @@ export class BookResolver {
     @Arg('input') input: BookValidator,
     @Arg('id') id: string,
     @Ctx() ctx: MyContext,
-    @Info() info: GraphQLResolveInfo,
   ): Promise<Book> {
-    const relationPaths = fieldsToRelations(info);
     const book = await ctx.em.getRepository(Book).findOneOrFail(id);
     book.assign(input);
     await ctx.em.persist(book).flush();
