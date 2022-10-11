@@ -2,23 +2,18 @@ import express from 'express';
 import 'express-async-errors';
 
 import { Connection, IDatabaseDriver, MikroORM } from '@mikro-orm/core';
-import bodyParser from 'body-parser';
 import { PublisherType } from 'contracts/enums/publisherType.enum';
 import cors from 'cors';
-import { graphqlHTTP } from 'express-graphql';
-import { GraphQLSchema } from 'graphql';
-import expressPlayground from 'graphql-playground-middleware-express';
 import { Server } from 'http';
 import ormConfig from 'orm.config';
 import { AuthorResolver } from 'resolvers/author.resolver';
 import { BookResolver } from 'resolvers/book.resolver';
-import { buildSchema, buildTypeDefsAndResolvers, registerEnumType } from 'type-graphql';
+import { buildTypeDefsAndResolvers, registerEnumType } from 'type-graphql';
 import { MyContext } from 'utils/interfaces/context.interface';
 import { HelloResolver } from 'resolvers/hello.resolver';
 import { Post } from 'entities/post.entity';
-import { ApolloServer } from 'apollo-server';
+import { ApolloServer } from 'apollo-server-express';
 
-import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 // import { resolvers, typeDefs } from 'minimal-apollo-setup';
 
@@ -52,17 +47,10 @@ export default class Application {
   };
 
   public init = async (): Promise<void> => {
-    // this.host = express();
 
-    // if (process.env.NODE_ENV !== 'production') {
-    //   this.host.get('/graphql', expressPlayground({ endpoint: '/graphql' }));
-    // }
-
-    // this.host.use(cors());
     const app = express();
     // 这一行允许 ApolloStudio 接管
     app.use(cors());
-    app.use(express.json());
 
     try {
       const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
@@ -75,6 +63,7 @@ export default class Application {
         csrfPrevention: true,
         cache: 'bounded',
         plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+        context: () => ({ em: this.orm.em.fork() }),
       });
 
       // succeeded
@@ -82,20 +71,12 @@ export default class Application {
 
       const port = 4000;
 
-      server.listen({ port }).then(({ url }) => {
-        console.log(`🚀  Server ready at ${url}`);
+      await server.start();
+      server.applyMiddleware({ app });
+
+      app.listen(port, () => {
+        console.log(`server listening on port ${port}`);
       });
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      // this.host.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction): void => {
-      //   console.error('📌 Something went wrong', error);
-      //   res.status(400).send(error);
-      // });
-
-      // const port = process.env.PORT || 4000;
-      // this.server = this.host.listen(port, () => {
-      //   console.log(`🚀 http://localhost:${port}/graphql`);
-      // });
     } catch (error) {
       console.error('📌 Could not start server', error);
     }
