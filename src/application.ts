@@ -16,6 +16,11 @@ import { buildSchema, registerEnumType } from 'type-graphql';
 import { MyContext } from 'utils/interfaces/context.interface';
 import { HelloResolver } from 'resolvers/hello.resolver';
 import { Post } from 'entities/post.entity';
+import { ApolloServer } from 'apollo-server';
+
+import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
+import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { resolvers, typeDefs } from 'minimal-apollo-setup';
 
 // TODO: create service for this
 registerEnumType(PublisherType, {
@@ -47,45 +52,94 @@ export default class Application {
   };
 
   public init = async (): Promise<void> => {
-    this.host = express();
+    // this.host = express();
 
-    if (process.env.NODE_ENV !== 'production') {
-      this.host.get('/graphql', expressPlayground({ endpoint: '/graphql' }));
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //   this.host.get('/graphql', expressPlayground({ endpoint: '/graphql' }));
+    // }
 
-    this.host.use(cors());
+    // this.host.use(cors());
+    const app = express();
+    // 这一行允许 ApolloStudio 接管
+    app.use(cors());
+    app.use(express.json());
 
     try {
-      const schema: GraphQLSchema = await buildSchema({
+      // const schema: GraphQLSchema = await buildSchema({
+      //   resolvers: [BookResolver, AuthorResolver, HelloResolver],
+      //   dateScalarMode: 'isoDate',
+      // });
+
+      const schema = await buildSchema({
         resolvers: [BookResolver, AuthorResolver, HelloResolver],
-        dateScalarMode: 'isoDate',
+        validate: false,
       });
+
+      // console.log(schema);
+
+      const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+        csrfPrevention: true,
+        cache: 'bounded',
+        /**
+         * What's up with this embed: true option?
+         * These are our recommended settings for using AS;
+         * they aren't the defaults in AS3 for backwards-compatibility reasons but
+         * will be the defaults in AS4. For production environments, use
+         * ApolloServerPluginLandingPageProductionDefault instead.
+         **/
+        plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
+      });
+
+      // const apolloServer = new ApolloServer({
+      //   typeDefs: await buildSchema({
+      //     resolvers: [BookResolver, AuthorResolver, HelloResolver],
+      //     validate: false,
+      //   }),
+      //   context: () => ({ em: this.orm.em }),
+      //   cache: 'bounded',
+      //   plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
+      // });
 
       // succeeded
       this.insertTestData();
 
-      this.host.post(
-        '/graphql',
-        bodyParser.json(),
-        graphqlHTTP((req, res) => ({
-          schema,
-          context: { req, res, em: this.orm.em.fork() } as MyContext,
-          customFormatErrorFn: (error) => {
-            throw error;
-          },
-        })),
-      );
+      const port = 4000;
+
+      server.listen({ port }).then(({ url }) => {
+        console.log(`🚀  Server ready at ${url}`);
+      });
+
+      // await apolloServer.start();
+      // apolloServer.applyMiddleware({ app, cors: false });
+
+      // app.listen(4000, () => {
+      //   console.log('server listening on port 4000');
+      // });
+
+      // this.host.post(
+      //   '/graphql',
+      //   bodyParser.json(),
+      //   graphqlHTTP((req, res) => ({
+      //     schema,
+      //     context: { req, res, em: this.orm.em.fork() } as MyContext,
+      //     customFormatErrorFn: (error) => {
+      //       throw error;
+      //     },
+      //   })),
+      // );
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      this.host.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction): void => {
-        console.error('📌 Something went wrong', error);
-        res.status(400).send(error);
-      });
+      // this.host.use((error: Error, req: express.Request, res: express.Response, next: express.NextFunction): void => {
+      //   console.error('📌 Something went wrong', error);
+      //   res.status(400).send(error);
+      // });
 
-      const port = process.env.PORT || 4000;
-      this.server = this.host.listen(port, () => {
-        console.log(`🚀 http://localhost:${port}/graphql`);
-      });
+      // const port = process.env.PORT || 4000;
+      // this.server = this.host.listen(port, () => {
+      //   console.log(`🚀 http://localhost:${port}/graphql`);
+      // });
     } catch (error) {
       console.error('📌 Could not start server', error);
     }
