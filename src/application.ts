@@ -15,6 +15,7 @@ import { BookResolver } from 'resolvers/book.resolver';
 import { buildSchema, registerEnumType } from 'type-graphql';
 import { MyContext } from 'utils/interfaces/context.interface';
 import { HelloResolver } from 'resolvers/hello.resolver';
+import { Post } from 'entities/post.entity';
 
 // TODO: create service for this
 registerEnumType(PublisherType, {
@@ -41,6 +42,10 @@ export default class Application {
     }
   };
 
+  private insertTestData = async () => {
+    await this.orm.em.nativeInsert(Post, { title: 'first' });
+  };
+
   public init = async (): Promise<void> => {
     this.host = express();
 
@@ -56,9 +61,10 @@ export default class Application {
         dateScalarMode: 'isoDate',
       });
 
+      this.insertTestData()
+
       this.host.post(
         '/graphql',
-        bodyParser.json(),
         graphqlHTTP((req, res) => ({
           schema,
           context: { req, res, em: this.orm.em.fork() } as MyContext,
