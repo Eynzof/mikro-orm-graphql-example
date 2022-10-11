@@ -14,6 +14,7 @@ import { AuthorResolver } from 'resolvers/author.resolver';
 import { BookResolver } from 'resolvers/book.resolver';
 import { buildSchema, registerEnumType } from 'type-graphql';
 import { MyContext } from 'utils/interfaces/context.interface';
+import { HelloResolver } from 'resolvers/hello.resolver';
 
 // TODO: create service for this
 registerEnumType(PublisherType, {
@@ -51,7 +52,7 @@ export default class Application {
 
     try {
       const schema: GraphQLSchema = await buildSchema({
-        resolvers: [BookResolver, AuthorResolver],
+        resolvers: [BookResolver, AuthorResolver, HelloResolver],
         dateScalarMode: 'isoDate',
       });
 
