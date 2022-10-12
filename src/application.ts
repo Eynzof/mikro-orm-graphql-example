@@ -15,69 +15,77 @@ import { Post } from 'entities/post.entity';
 import { ApolloServer } from 'apollo-server-express';
 
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
+import { PostResolver } from 'resolvers/post.resolver';
 // import { resolvers, typeDefs } from 'minimal-apollo-setup';
 
 // TODO: create service for this
 registerEnumType(PublisherType, {
-  name: 'PublisherType',
-  description: 'Type of the publisher',
+    name: 'PublisherType',
+    description: 'Type of the publisher',
 });
 
 export default class Application {
-  public orm: MikroORM<IDatabaseDriver<Connection>>;
-  public host: express.Application;
-  public server: Server;
+    public orm: MikroORM<IDatabaseDriver<Connection>>;
+    public host: express.Application;
+    public server: Server;
 
-  public connect = async (): Promise<void> => {
-    try {
-      this.orm = await MikroORM.init(ormConfig);
-      const migrator = this.orm.getMigrator();
-      const migrations = await migrator.getPendingMigrations();
-      if (migrations && migrations.length > 0) {
-        await migrator.up();
-      }
-    } catch (error) {
-      console.error('📌 Could not connect to the database', error);
-      throw Error(error);
-    }
-  };
+    public connect = async (): Promise<void> => {
+        try {
+            this.orm = await MikroORM.init(ormConfig);
+            const migrator = this.orm.getMigrator();
+            const migrations = await migrator.getPendingMigrations();
+            if (migrations && migrations.length > 0) {
+                await migrator.up();
+            }
+        } catch (error) {
+            console.error('📌 Could not connect to the database', error);
+            throw Error(error);
+        }
+    };
 
-  private insertTestData = async () => {
-    await this.orm.em.nativeInsert(Post, { title: 'first' });
-  };
+    private insertTestData = async () => {
+        await this.orm.em.nativeInsert(Post, { title: 'first' });
+    };
 
-  public init = async (): Promise<void> => {
-    const app = express();
-    // 这一行允许 ApolloStudio 接管
-    app.use(cors());
+    public init = async (): Promise<void> => {
+        const app = express();
+        // 这一行允许 ApolloStudio 接管
+        app.use(cors());
 
-    try {
-      const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
-        resolvers: [BookResolver, AuthorResolver, HelloResolver],
-      });
+        try {
+            const { typeDefs, resolvers } = await buildTypeDefsAndResolvers({
+                resolvers: [
+                    BookResolver,
+                    AuthorResolver,
+                    HelloResolver,
+                    PostResolver,
+                ],
+            });
 
-      const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        csrfPrevention: true,
-        cache: 'bounded',
-        plugins: [ApolloServerPluginLandingPageLocalDefault({ embed: true })],
-        context: () => ({ em: this.orm.em.fork() }),
-      });
+            const server = new ApolloServer({
+                typeDefs,
+                resolvers,
+                csrfPrevention: true,
+                cache: 'bounded',
+                plugins: [
+                    ApolloServerPluginLandingPageLocalDefault({ embed: true }),
+                ],
+                context: () => ({ em: this.orm.em.fork() }),
+            });
 
-      // succeeded
-      this.insertTestData();
+            // succeeded
+            this.insertTestData();
 
-      const port = 4000;
+            const port = 4000;
 
-      await server.start();
-      server.applyMiddleware({ app });
+            await server.start();
+            server.applyMiddleware({ app });
 
-      app.listen(port, () => {
-        console.log(`server listening on port ${port}`);
-      });
-    } catch (error) {
-      console.error('📌 Could not start server', error);
-    }
-  };
+            app.listen(port, () => {
+                console.log(`server listening on port ${port}`);
+            });
+        } catch (error) {
+            console.error('📌 Could not start server', error);
+        }
+    };
 }
