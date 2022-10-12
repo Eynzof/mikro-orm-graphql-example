@@ -1,478 +1,438 @@
 {
-  "namespaces": [
-    "public"
-  ],
-  "name": "public",
-  "tables": [
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "mappedType": "integer"
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "'NOW()'",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "default": "'NOW()'",
-          "mappedType": "datetime"
-        }
-      },
-      "name": "post",
-      "schema": "public",
-      "indexes": [
+    "namespaces": ["public"],
+    "name": "public",
+    "tables": [
         {
-          "keyName": "post_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "type": {
-          "name": "type",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "enumItems": [
-            "local",
-            "global"
-          ],
-          "mappedType": "enum"
-        }
-      },
-      "name": "publisher",
-      "schema": "public",
-      "indexes": [
-        {
-          "keyName": "publisher_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "email": {
-          "name": "email",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "terms_accepted": {
-          "name": "terms_accepted",
-          "type": "jsonb",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "json"
-        },
-        "born": {
-          "name": "born",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "favourite_book_id": {
-          "name": "favourite_book_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "uuid"
-        }
-      },
-      "name": "author",
-      "schema": "public",
-      "indexes": [
-        {
-          "columnNames": [
-            "email"
-          ],
-          "composite": false,
-          "keyName": "author_email_unique",
-          "primary": false,
-          "unique": true
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "serial",
+                    "unsigned": true,
+                    "autoincrement": true,
+                    "primary": true,
+                    "nullable": false,
+                    "mappedType": "integer"
+                },
+                "title": {
+                    "name": "title",
+                    "type": "varchar(255)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "string"
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "default": "'NOW()'",
+                    "mappedType": "datetime"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "default": "'NOW()'",
+                    "mappedType": "datetime"
+                }
+            },
+            "name": "post",
+            "schema": "public",
+            "indexes": [
+                {
+                    "keyName": "post_pkey",
+                    "columnNames": ["id"],
+                    "composite": false,
+                    "primary": true,
+                    "unique": true
+                }
+            ],
+            "checks": [],
+            "foreignKeys": {}
         },
         {
-          "keyName": "author_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "author_favourite_book_id_foreign": {
-          "constraintName": "author_favourite_book_id_foreign",
-          "columnNames": [
-            "favourite_book_id"
-          ],
-          "localTableName": "public.author",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.book",
-          "deleteRule": "set null",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "uuid"
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "name": {
+                    "name": "name",
+                    "type": "varchar(255)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "string"
+                },
+                "type": {
+                    "name": "type",
+                    "type": "text",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "enumItems": ["local", "global"],
+                    "mappedType": "enum"
+                }
+            },
+            "name": "publisher",
+            "schema": "public",
+            "indexes": [
+                {
+                    "keyName": "publisher_pkey",
+                    "columnNames": ["id"],
+                    "composite": false,
+                    "primary": true,
+                    "unique": true
+                }
+            ],
+            "checks": [],
+            "foreignKeys": {}
         },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "title": {
-          "name": "title",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        },
-        "author_id": {
-          "name": "author_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "publisher_id": {
-          "name": "publisher_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "uuid"
-        }
-      },
-      "name": "book",
-      "schema": "public",
-      "indexes": [
         {
-          "keyName": "book_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "book_author_id_foreign": {
-          "constraintName": "book_author_id_foreign",
-          "columnNames": [
-            "author_id"
-          ],
-          "localTableName": "public.book",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.author",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "uuid"
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "name": {
+                    "name": "name",
+                    "type": "varchar(255)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "string"
+                },
+                "email": {
+                    "name": "email",
+                    "type": "varchar(255)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "string"
+                },
+                "terms_accepted": {
+                    "name": "terms_accepted",
+                    "type": "jsonb",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "json"
+                },
+                "born": {
+                    "name": "born",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": true,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "favourite_book_id": {
+                    "name": "favourite_book_id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": true,
+                    "mappedType": "uuid"
+                }
+            },
+            "name": "author",
+            "schema": "public",
+            "indexes": [
+                {
+                    "columnNames": ["email"],
+                    "composite": false,
+                    "keyName": "author_email_unique",
+                    "primary": false,
+                    "unique": true
+                },
+                {
+                    "keyName": "author_pkey",
+                    "columnNames": ["id"],
+                    "composite": false,
+                    "primary": true,
+                    "unique": true
+                }
+            ],
+            "checks": [],
+            "foreignKeys": {
+                "author_favourite_book_id_foreign": {
+                    "constraintName": "author_favourite_book_id_foreign",
+                    "columnNames": ["favourite_book_id"],
+                    "localTableName": "public.author",
+                    "referencedColumnNames": ["id"],
+                    "referencedTableName": "public.book",
+                    "deleteRule": "set null",
+                    "updateRule": "cascade"
+                }
+            }
         },
-        "book_publisher_id_foreign": {
-          "constraintName": "book_publisher_id_foreign",
-          "columnNames": [
-            "publisher_id"
-          ],
-          "localTableName": "public.book",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.publisher",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
-        }
-      }
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "timestamptz(0)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 6,
-          "mappedType": "datetime"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "string"
-        }
-      },
-      "name": "tag",
-      "schema": "public",
-      "indexes": [
         {
-          "keyName": "tag_pkey",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {}
-    },
-    {
-      "columns": {
-        "book_id": {
-          "name": "book_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "uuid"
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "title": {
+                    "name": "title",
+                    "type": "varchar(255)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "string"
+                },
+                "author_id": {
+                    "name": "author_id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "uuid"
+                },
+                "publisher_id": {
+                    "name": "publisher_id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": true,
+                    "mappedType": "uuid"
+                }
+            },
+            "name": "book",
+            "schema": "public",
+            "indexes": [
+                {
+                    "keyName": "book_pkey",
+                    "columnNames": ["id"],
+                    "composite": false,
+                    "primary": true,
+                    "unique": true
+                }
+            ],
+            "checks": [],
+            "foreignKeys": {
+                "book_author_id_foreign": {
+                    "constraintName": "book_author_id_foreign",
+                    "columnNames": ["author_id"],
+                    "localTableName": "public.book",
+                    "referencedColumnNames": ["id"],
+                    "referencedTableName": "public.author",
+                    "deleteRule": "cascade",
+                    "updateRule": "cascade"
+                },
+                "book_publisher_id_foreign": {
+                    "constraintName": "book_publisher_id_foreign",
+                    "columnNames": ["publisher_id"],
+                    "localTableName": "public.book",
+                    "referencedColumnNames": ["id"],
+                    "referencedTableName": "public.publisher",
+                    "deleteRule": "cascade",
+                    "updateRule": "cascade"
+                }
+            }
         },
-        "tag_id": {
-          "name": "tag_id",
-          "type": "uuid",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "uuid"
-        }
-      },
-      "name": "book_tags",
-      "schema": "public",
-      "indexes": [
         {
-          "keyName": "book_tags_pkey",
-          "columnNames": [
-            "book_id",
-            "tag_id"
-          ],
-          "composite": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "book_tags_book_id_foreign": {
-          "constraintName": "book_tags_book_id_foreign",
-          "columnNames": [
-            "book_id"
-          ],
-          "localTableName": "public.book_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.book",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "uuid"
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "updated_at": {
+                    "name": "updated_at",
+                    "type": "timestamptz(0)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "length": 6,
+                    "mappedType": "datetime"
+                },
+                "name": {
+                    "name": "name",
+                    "type": "varchar(255)",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "string"
+                }
+            },
+            "name": "tag",
+            "schema": "public",
+            "indexes": [
+                {
+                    "keyName": "tag_pkey",
+                    "columnNames": ["id"],
+                    "composite": false,
+                    "primary": true,
+                    "unique": true
+                }
+            ],
+            "checks": [],
+            "foreignKeys": {}
         },
-        "book_tags_tag_id_foreign": {
-          "constraintName": "book_tags_tag_id_foreign",
-          "columnNames": [
-            "tag_id"
-          ],
-          "localTableName": "public.book_tags",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "public.tag",
-          "deleteRule": "cascade",
-          "updateRule": "cascade"
+        {
+            "columns": {
+                "book_id": {
+                    "name": "book_id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "uuid"
+                },
+                "tag_id": {
+                    "name": "tag_id",
+                    "type": "uuid",
+                    "unsigned": false,
+                    "autoincrement": false,
+                    "primary": false,
+                    "nullable": false,
+                    "mappedType": "uuid"
+                }
+            },
+            "name": "book_tags",
+            "schema": "public",
+            "indexes": [
+                {
+                    "keyName": "book_tags_pkey",
+                    "columnNames": ["book_id", "tag_id"],
+                    "composite": true,
+                    "primary": true,
+                    "unique": true
+                }
+            ],
+            "checks": [],
+            "foreignKeys": {
+                "book_tags_book_id_foreign": {
+                    "constraintName": "book_tags_book_id_foreign",
+                    "columnNames": ["book_id"],
+                    "localTableName": "public.book_tags",
+                    "referencedColumnNames": ["id"],
+                    "referencedTableName": "public.book",
+                    "deleteRule": "cascade",
+                    "updateRule": "cascade"
+                },
+                "book_tags_tag_id_foreign": {
+                    "constraintName": "book_tags_tag_id_foreign",
+                    "columnNames": ["tag_id"],
+                    "localTableName": "public.book_tags",
+                    "referencedColumnNames": ["id"],
+                    "referencedTableName": "public.tag",
+                    "deleteRule": "cascade",
+                    "updateRule": "cascade"
+                }
+            }
         }
-      }
-    }
-  ]
+    ]
 }
