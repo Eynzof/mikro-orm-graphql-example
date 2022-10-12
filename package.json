@@ -30,6 +30,7 @@
     "@typescript-eslint/parser": "^3.8.0",
     "apollo-server": "^3.10.3",
     "apollo-server-express": "^3.10.3",
+    "argon2": "^0.29.1",
     "body-parser": "^1.19.0",
     "chai": "^4.2.0",
     "class-validator": "^0.12.2",

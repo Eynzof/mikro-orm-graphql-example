@@ -16,6 +16,7 @@ import { ApolloServer } from 'apollo-server-express';
 
 import { ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
 import { PostResolver } from 'resolvers/post.resolver';
+import { UserResolver } from 'resolvers/user.resolver';
 // import { resolvers, typeDefs } from 'minimal-apollo-setup';
 
 // TODO: create service for this
@@ -59,6 +60,7 @@ export default class Application {
                     AuthorResolver,
                     HelloResolver,
                     PostResolver,
+                    UserResolver,
                 ],
             });
 

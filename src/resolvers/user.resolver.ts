@@ -5,10 +5,12 @@ import {
     Field,
     InputType,
     Mutation,
+    ObjectType,
     Query,
     Resolver,
 } from 'type-graphql';
 import { MyContext } from 'utils/types/types';
+import argon2 from 'argon2';
 
 @InputType()
 class UsernamepasswordingInput {
@@ -18,15 +20,50 @@ class UsernamepasswordingInput {
     password: string;
 }
 
-@Resolver(() => String)
+@ObjectType()
+class UserResponse {
+    @Field(() => [Error], { nullable: true })
+    errors?: Error[];
+    @Field(() => User, { nullable: true })
+    user?: User;
+}
+
+@ObjectType()
+class FieldError {
+    @Field()
+    field: string;
+    @Field()
+    message: string;
+}
+
+@Resolver()
 export class UserResolver {
-    @Mutation(() => String)
-    register(
-        @Arg('options') options: UsernamepasswordingInput,
+    @Mutation(() => User)
+    async register(
+        @Arg('options', () => UsernamepasswordingInput)
+        options: UsernamepasswordingInput,
         @Ctx() { em }: MyContext,
     ) {
-        const user = em.create(User, { username: options.username });
+        const hashedPassword = await argon2.hash(options.password);
+        const user = em.create(User, {
+            username: options.username,
+            password: hashedPassword,
+        });
         em.persistAndFlush(user);
-        return 'test';
+        return user;
+    }
+
+    @Mutation(() => User)
+    async login(
+        @Arg('options', () => UsernamepasswordingInput)
+        options: UsernamepasswordingInput,
+        @Ctx() { em }: MyContext,
+    ) {
+        const user = em.findOne(User, {
+            username: options.username.toLowerCase(),
+        });
+
+        em.persistAndFlush(user);
+        return user;
     }
 }
