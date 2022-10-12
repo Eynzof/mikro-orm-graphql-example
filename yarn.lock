@@ -901,8 +901,8 @@
     "is-string" "^1.0.7"
 
 "arrify@^1.0.0":
-  "integrity" "sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0="
-  "resolved" "https://registry.npmjs.org/arrify/-/arrify-1.0.1.tgz"
+  "integrity" "sha512-3CYzex9M9FGQjCGMGyi6/31c8GJbgb0qGyrx5HWxPd0aCwh4cB2YjMb2Xf9UuoogrMrlO9cTqnB5rI5GHZTcUA=="
+  "resolved" "https://registry.npmmirror.com/arrify/-/arrify-1.0.1.tgz"
   "version" "1.0.1"
 
 "assertion-error@^1.1.0":
@@ -1402,7 +1402,7 @@
 
 "diff@^4.0.1":
   "integrity" "sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A=="
-  "resolved" "https://registry.npmjs.org/diff/-/diff-4.0.2.tgz"
+  "resolved" "https://registry.npmmirror.com/diff/-/diff-4.0.2.tgz"
   "version" "4.0.2"
 
 "dir-glob@^3.0.1":
@@ -3778,7 +3778,7 @@
     "ts-node" "^10.4.0"
     "tsconfig" "^7.0.0"
 
-"ts-node@^10.4.0":
+"ts-node@^10.4.0", "ts-node@^10.9.1":
   "integrity" "sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw=="
   "resolved" "https://registry.npmmirror.com/ts-node/-/ts-node-10.9.1.tgz"
   "version" "10.9.1"
@@ -3799,7 +3799,7 @@
 
 "ts-node@7.0.1":
   "integrity" "sha512-BVwVbPJRspzNh2yfslyT1PSbl5uIk03EZlb493RKHN4qej/D06n1cEhjlOJG69oFsE7OT8XjpTUcYf6pKTLMhw=="
-  "resolved" "https://registry.npmjs.org/ts-node/-/ts-node-7.0.1.tgz"
+  "resolved" "https://registry.npmmirror.com/ts-node/-/ts-node-7.0.1.tgz"
   "version" "7.0.1"
   dependencies:
     "arrify" "^1.0.0"
@@ -4199,8 +4199,8 @@
     "yargs-parser" "^18.1.2"
 
 "yn@^2.0.0":
-  "integrity" "sha1-5a2ryKz0CPY4X8dklWhMiOavaJo="
-  "resolved" "https://registry.npmjs.org/yn/-/yn-2.0.0.tgz"
+  "integrity" "sha512-uTv8J/wiWTgUTg+9vLTi//leUl5vDQS6uii/emeTb2ssY7vl6QWf2fFbIIGjnhjvbdKlU0ed7QPgY1htTC86jQ=="
+  "resolved" "https://registry.npmmirror.com/yn/-/yn-2.0.0.tgz"
   "version" "2.0.0"
 
 "yn@3.1.1":
