@@ -22,8 +22,8 @@ class UsernamepasswordingInput {
 
 @ObjectType()
 class UserResponse {
-    @Field(() => [Error], { nullable: true })
-    errors?: Error[];
+    @Field(() => [FieldError], { nullable: true })
+    errors?: FieldError[];
     @Field(() => User, { nullable: true })
     user?: User;
 }
@@ -43,27 +43,74 @@ export class UserResolver {
         @Arg('options', () => UsernamepasswordingInput)
         options: UsernamepasswordingInput,
         @Ctx() { em }: MyContext,
-    ) {
+    ): Promise<UserResponse> {
+        if (options.username.length <= 3) {
+            return {
+                errors: [
+                    {
+                        field: 'username',
+                        message: 'Username must be more than 3 characters',
+                    },
+                ],
+            };
+        }
+
+        if (options.password.length <= 3) {
+            return {
+                errors: [
+                    {
+                        field: 'password',
+                        message: 'Password must be more than 3 characters',
+                    },
+                ],
+            };
+        }
+
         const hashedPassword = await argon2.hash(options.password);
         const user = em.create(User, {
             username: options.username,
             password: hashedPassword,
         });
         em.persistAndFlush(user);
-        return user;
+        return { user };
     }
 
-    @Mutation(() => User)
+    @Mutation(() => UserResponse)
     async login(
         @Arg('options', () => UsernamepasswordingInput)
         options: UsernamepasswordingInput,
         @Ctx() { em }: MyContext,
-    ) {
-        const user = em.findOne(User, {
-            username: options.username.toLowerCase(),
-        });
+    ): Promise<UserResponse> {
+        {
+            const user = await em.findOne(User, {
+                username: options.username.toLowerCase(),
+            });
+            if (!user) {
+                return {
+                    errors: [
+                        {
+                            field: 'username',
+                            message: 'User not found',
+                        },
+                    ],
+                };
+            }
 
-        em.persistAndFlush(user);
-        return user;
+            const valid = await argon2.verify(user.password, options.password);
+            if (!valid) {
+                return {
+                    errors: [
+                        {
+                            field: 'password',
+                            message: 'Invalid password',
+                        },
+                    ],
+                };
+            }
+
+            return {
+                user,
+            };
+        }
     }
 }
