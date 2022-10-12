@@ -32,11 +32,27 @@ export class PostResolver {
         @Arg('title', { nullable: true }) title: string,
         @Ctx() { em }: MyContext,
     ): Promise<Post | null> {
-        const post = em.findOne(Post, { id });
+        const post = await em.findOne(Post, { id });
         if (!post) {
             return null;
         }
-        await em.persistAndFlush(post);
+        if (typeof post !== undefined) {
+            post.title = title;
+            await em.persistAndFlush(post);
+        }
         return post;
+    }
+
+    @Mutation(() => Boolean)
+    public async deletePost(
+        @Arg('id') id: number,
+        @Ctx() { em }: MyContext,
+    ): Promise<boolean> {
+        try {
+            await em.nativeDelete(Post, { id });
+        } catch (err) {
+            return false;
+        }
+        return true;
     }
 }
