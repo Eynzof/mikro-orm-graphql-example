@@ -10,23 +10,23 @@ let application: Application;
 let em: EntityManager<IDatabaseDriver<Connection>>;
 
 describe('Sample tests', async () => {
-  before(async () => {
-    application = new Application();
-    await application.connect();
-    await application.init();
+    before(async () => {
+        application = new Application();
+        await application.connect();
+        await application.init();
 
-    em = application.orm.em.fork();
+        em = application.orm.em.fork();
 
-    request = supertest(application.host);
-  });
+        request = supertest(application.host);
+    });
 
-  after(async () => {
-    application.server.close();
-  });
+    after(async () => {
+        application.server.close();
+    });
 
-  it('should clear database and load fixtures', async () => {
-    await clearDatabase(application.orm);
-    await loadFixtures(application.orm);
-    console.log('🚀 Database cleared, fixtures loaded');
-  });
+    it('should clear database and load fixtures', async () => {
+        await clearDatabase(application.orm);
+        await loadFixtures(application.orm);
+        console.log('🚀 Database cleared, fixtures loaded');
+    });
 });
