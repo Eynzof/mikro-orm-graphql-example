@@ -15,7 +15,7 @@ export class BookResolver {
     @Query(() => Book, { nullable: true })
     public async getBook(
         @Arg('id') id: string,
-        @Ctx() ctx: MyContext,  
+        @Ctx() ctx: MyContext,
     ): Promise<Book | null> {
         return ctx.em.getRepository(Book).findOne(id);
     }

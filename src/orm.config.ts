@@ -1,4 +1,5 @@
 import { MikroORM } from '@mikro-orm/core';
+import { SqlHighlighter } from '@mikro-orm/sql-highlighter';
 
 export default {
     migrations: {
@@ -16,5 +17,7 @@ export default {
     entitiesTs: ['src/**/*.entity.ts'],
     type: 'postgresql',
     allowGlobalContext: true,
+    logger: console.log.bind(console),
     debug: true,
+    highlighter: new SqlHighlighter(),
 } as Parameters<typeof MikroORM.init>[0];

@@ -76,13 +76,21 @@ export class UserResolver {
         } catch (error) {
             console.log('--------------------------------');
             console.log(error);
-            // if (
-            //     error.code == '23505' ||
-            //     error.detail.includes('UniqueConstraintViolationException')
-            // ) {
-            //     // duplicate username
-            //     console.log('message:', error.message);
-            // }
+            if (
+                error.code == '23505' ||
+                error.detail.includes('UniqueConstraintViolationException')
+            ) {
+                // duplicate username
+                return {
+                    errors: [
+                        {
+                            field: 'username',
+                            message: 'username duplicate',
+                        },
+                    ],
+                };
+                console.log('message:', error.message);
+            }
         }
         return { user };
     }
