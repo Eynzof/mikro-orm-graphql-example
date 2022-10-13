@@ -38,7 +38,7 @@ class FieldError {
 
 @Resolver()
 export class UserResolver {
-    @Mutation(() => User)
+    @Mutation(() => UserResponse)
     async register(
         @Arg('options', () => UsernamepasswordingInput)
         options: UsernamepasswordingInput,
@@ -71,7 +71,19 @@ export class UserResolver {
             username: options.username,
             password: hashedPassword,
         });
-        em.persistAndFlush(user);
+        try {
+            em.persistAndFlush(user);
+        } catch (error) {
+            console.log('--------------------------------');
+            console.log(error);
+            // if (
+            //     error.code == '23505' ||
+            //     error.detail.includes('UniqueConstraintViolationException')
+            // ) {
+            //     // duplicate username
+            //     console.log('message:', error.message);
+            // }
+        }
         return { user };
     }
 

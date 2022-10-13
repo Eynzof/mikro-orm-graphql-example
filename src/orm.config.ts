@@ -16,6 +16,5 @@ export default {
     entitiesTs: ['src/**/*.entity.ts'],
     type: 'postgresql',
     allowGlobalContext: true,
-    logger: console.log.bind(console),
     debug: true,
 } as Parameters<typeof MikroORM.init>[0];

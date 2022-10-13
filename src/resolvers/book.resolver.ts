@@ -15,7 +15,7 @@ export class BookResolver {
     @Query(() => Book, { nullable: true })
     public async getBook(
         @Arg('id') id: string,
-        @Ctx() ctx: MyContext,
+        @Ctx() ctx: MyContext,  
     ): Promise<Book | null> {
         return ctx.em.getRepository(Book).findOne(id);
     }
@@ -37,7 +37,7 @@ export class BookResolver {
                 .getRepository(Publisher)
                 .findOneOrFail(publisherId);
         }
-        await ctx.em.persist(book).flush();
+        await ctx.em.persistAndFlush(book);
         return book;
     }
 
@@ -49,7 +49,7 @@ export class BookResolver {
     ): Promise<Book> {
         const book = await ctx.em.getRepository(Book).findOneOrFail(id);
         book.assign(input);
-        await ctx.em.persist(book).flush();
+        await ctx.em.persistAndFlush(book);
         return book;
     }
 
